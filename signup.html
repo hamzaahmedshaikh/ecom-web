@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PakStyle - Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-5 col-lg-4">
+                <div class="card auth-card">
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <i class="bi bi-bag-heart-fill text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h2 class="fw-bold">PakStyle</h2>
+                            <p class="text-muted">Create your account</p>
+                        </div>
+                        <form id="signupForm">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter your full name" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" placeholder="Create a password" required minlength="6">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="bi bi-person-plus me-2"></i>Sign Up
+                            </button>
+                        </form>
+                        <div class="text-center mt-4">
+                            <p class="mb-0">Already have an account? <a href="index.html" class="text-primary text-decoration-none fw-semibold">Login</a></p>
+                        </div>
+                        <div id="errorMessage" class="alert alert-danger mt-3 d-none" role="alert"></div>
+                        <div id="successMessage" class="alert alert-success mt-3 d-none" role="alert"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        if (getCurrentUser()) {
+            window.location.href = 'home.html';
+        }
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+            
+            const result = signupUser(name, email, password);
+            
+            if (result.success) {
+                errorDiv.classList.add('d-none');
+                successDiv.textContent = result.message + ' Redirecting to login...';
+                successDiv.classList.remove('d-none');
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                successDiv.classList.add('d-none');
+                errorDiv.textContent = result.message;
+                errorDiv.classList.remove('d-none');
+            }
+        });
+    </script>
+</body>
+</html>
